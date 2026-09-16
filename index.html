@@ -9,112 +9,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  :root{
-    --bg:#eef2f7; --card:#fff; --primary:#1a73e8; --primary-dark:#1257b0;
-    --green:#16a34a; --red:#dc2626; --text:#1f2937; --muted:#6b7280;
-    --border:#dde3ea;
-  }
-  body{
-    font-family:'Noto Sans Gujarati','Segoe UI',system-ui,sans-serif;
-    background:var(--bg); color:var(--text); font-size:15px; line-height:1.6;
-    padding-bottom:80px;
-  }
+  :root{--bg:#eef2f7;--card:#fff;--primary:#1a73e8;--primary-dark:#1257b0;--green:#16a34a;--red:#dc2626;--text:#1f2937;--muted:#6b7280;--border:#dde3ea;}
+  body{font-family:'Noto Sans Gujarati','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;padding-bottom:80px;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 16px;}
-
-  /* HEADER */
-  header{
-    background:linear-gradient(135deg,#1a73e8,#0d47a1); color:#fff;
-    padding:16px 0; box-shadow:0 4px 16px rgba(13,71,161,.25);
-    position:sticky; top:0; z-index:50;
-  }
+  header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:16px 0;box-shadow:0 4px 16px rgba(13,71,161,.25);position:sticky;top:0;z-index:50;}
   .header-inner{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;}
   header h1{margin:0;font-size:20px;font-weight:700;}
   header .sub{margin:2px 0 0;font-size:13px;opacity:.88;}
   .header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .stat{
-    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28);
-    border-radius:12px; padding:5px 14px; text-align:center; min-width:70px;
-  }
+  .stat{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:5px 14px;text-align:center;min-width:70px;}
   .stat span{display:block;font-size:19px;font-weight:700;line-height:1.2;}
   .stat small{font-size:11px;opacity:.9;}
-
-  /* MAIN */
   main{padding:18px 0;}
-  .card{
-    background:var(--card); border-radius:14px; padding:18px;
-    margin-bottom:16px; box-shadow:0 2px 10px rgba(16,24,40,.06);
-    border:1px solid rgba(16,24,40,.04);
-  }
-  .card-title{
-    font-size:16px; font-weight:700; margin:0 0 14px; color:#0d47a1;
-    display:flex; align-items:center; gap:8px;
-  }
-  .card-title::before{
-    content:""; width:4px; height:18px; border-radius:3px; background:var(--primary);
-  }
+  .card{background:var(--card);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(16,24,40,.06);border:1px solid rgba(16,24,40,.04);}
+  .card-title{font-size:16px;font-weight:700;margin:0 0 14px;color:#0d47a1;display:flex;align-items:center;gap:8px;}
+  .card-title::before{content:"";width:4px;height:18px;border-radius:3px;background:var(--primary);}
   .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-
-  /* FIELDS */
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;}
   .fld{display:flex;flex-direction:column;gap:5px;}
   .fld label{font-size:13.5px;font-weight:600;color:#374151;}
   .fld label .req{color:var(--red);}
-  input[type=text],input[type=number],input[type=tel],input[type=password],select{
-    width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:9px;
-    font:inherit; font-size:14.5px; background:#fbfcfe; color:inherit;
-    transition:border-color .15s, box-shadow .15s, background .15s;
-  }
-  input:focus,select:focus{
-    outline:none; border-color:var(--primary); background:#fff;
-    box-shadow:0 0 0 3px rgba(26,115,232,.14);
-  }
-
-  /* TABS */
+  input[type=text],input[type=number],input[type=tel],input[type=password],select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:9px;font:inherit;font-size:14.5px;background:#fbfcfe;color:inherit;transition:border-color .15s,box-shadow .15s,background .15s;}
+  input:focus,select:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(26,115,232,.14);}
   .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-  .tab{
-    padding:9px 18px; border-radius:24px; border:1px solid var(--border);
-    background:#f7f9fc; cursor:pointer; font:inherit; font-size:14px;
-    font-weight:600; color:#4b5563; transition:.16s;
-  }
+  .tab{padding:9px 18px;border-radius:24px;border:1px solid var(--border);background:#f7f9fc;cursor:pointer;font:inherit;font-size:14px;font-weight:600;color:#4b5563;transition:.16s;}
   .tab:hover{border-color:#b9d2f5;color:var(--primary);}
   .tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 3px 10px rgba(26,115,232,.32);}
   .panel{display:none;}
   .panel.active{display:block;}
-
-  /* QUESTION FIELD */
-  .field{
-    display:flex; gap:16px; align-items:flex-start;
-    padding:12px 4px; border-bottom:1px dashed #e8edf3;
-  }
+  .field{display:flex;gap:16px;align-items:flex-start;padding:12px 4px;border-bottom:1px dashed #e8edf3;}
   .field:last-child{border-bottom:none;}
-  .q-label{
-    flex:1 1 52%; font-size:14.5px; font-weight:500; line-height:1.55;
-    display:flex; gap:9px; align-items:flex-start;
-  }
-  .q-no{
-    flex:0 0 auto; background:#e8f0fe; color:var(--primary-dark);
-    font-size:11.5px; font-weight:700; border-radius:6px;
-    padding:2px 7px; margin-top:2px;
-  }
-  .field > input, .field > .radio-row{flex:1 1 48%;}
+  .q-label{flex:1 1 52%;font-size:14.5px;font-weight:500;line-height:1.55;display:flex;gap:9px;align-items:flex-start;}
+  .q-no{flex:0 0 auto;background:#e8f0fe;color:var(--primary-dark);font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 7px;margin-top:2px;}
+  .field > input,.field > .radio-row{flex:1 1 48%;}
   .radio-row{display:flex;flex-wrap:wrap;gap:9px;}
-  .radio-chip{
-    display:inline-flex; align-items:center; gap:7px;
-    padding:7px 14px; border:1px solid var(--border); border-radius:22px;
-    background:#fbfcfe; cursor:pointer; font-size:14px; user-select:none;
-    transition:.15s;
-  }
+  .radio-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--border);border-radius:22px;background:#fbfcfe;cursor:pointer;font-size:14px;user-select:none;transition:.15s;}
   .radio-chip:hover{border-color:#b9d2f5;}
   .radio-chip input{accent-color:var(--primary);margin:0;cursor:pointer;}
   .radio-chip:has(input:checked){border-color:var(--primary);background:#e8f0fe;color:var(--primary-dark);font-weight:600;}
-
-  /* BUTTONS */
   .actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
-  .btn{
-    padding:10px 20px; border-radius:10px; border:1px solid transparent;
-    background:var(--primary); color:#fff; font:inherit; font-size:14.5px;
-    font-weight:600; cursor:pointer; transition:.16s; white-space:nowrap;
-  }
+  .btn{padding:10px 20px;border-radius:10px;border:1px solid transparent;background:var(--primary);color:#fff;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:.16s;white-space:nowrap;}
   .btn:hover{background:var(--primary-dark);}
   .btn:active{transform:translateY(1px);}
   .btn.ghost{background:#fff;color:var(--primary);border-color:#b9d2f5;}
@@ -124,143 +58,51 @@
   .btn.danger{background:#fee2e2;color:var(--red);border-color:#fecaca;}
   .btn.danger:hover{background:#fecaca;}
   .btn.small{padding:5px 12px;font-size:13px;border-radius:8px;}
-
-  /* RECORDS */
-  .record{
-    border:1px solid var(--border); border-radius:11px; padding:12px 14px;
-    margin-bottom:10px; background:#fbfcfe;
-  }
+  .record{border:1px solid var(--border);border-radius:11px;padding:12px 14px;margin-bottom:10px;background:#fbfcfe;}
   .record:hover{border-color:#b9d2f5;background:#f5f9ff;}
   .rec-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-  .rec-no{
-    flex:0 0 auto; width:28px; height:28px; border-radius:50%;
-    background:var(--primary); color:#fff; font-size:12.5px; font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-  }
+  .rec-no{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;}
   .rec-title{font-weight:700;font-size:15px;}
   .rec-sub{font-size:13px;color:var(--muted);}
   .rec-actions{margin-left:auto;display:flex;gap:8px;}
   .rec-meta{font-size:12.5px;color:var(--muted);margin-top:6px;padding-left:40px;}
-  .empty{
-    text-align:center; color:var(--muted); padding:24px 10px; font-size:14px;
-    background:#f9fbfd; border:1px dashed var(--border); border-radius:11px;
-  }
-  .badge{
-    display:inline-block; background:#e8f0fe; color:var(--primary-dark);
-    border-radius:6px; padding:1px 8px; font-size:11.5px; font-weight:600;
-  }
-
-  /* FOOTER */
-  footer{
-    position:fixed; bottom:0; left:0; right:0;
-    background:rgba(255,255,255,.97);
-    border-top:1px solid var(--border); padding:10px 16px;
-    display:flex; align-items:center; justify-content:space-between;
-    z-index:40; font-size:13px; color:var(--muted);
-  }
-  .admin-link{
-    background:#eef2f7; border:1px solid var(--border); color:#374151;
-    font:inherit; font-size:13px; font-weight:600; cursor:pointer;
-    padding:7px 14px; border-radius:9px; transition:.15s;
-  }
+  .empty{text-align:center;color:var(--muted);padding:24px 10px;font-size:14px;background:#f9fbfd;border:1px dashed var(--border);border-radius:11px;}
+  .badge{display:inline-block;background:#e8f0fe;color:var(--primary-dark);border-radius:6px;padding:1px 8px;font-size:11.5px;font-weight:600;}
+  footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;z-index:40;font-size:13px;color:var(--muted);}
+  .admin-link{background:#eef2f7;border:1px solid var(--border);color:#374151;font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:7px 14px;border-radius:9px;transition:.15s;}
   .admin-link:hover{background:#1a73e8;color:#fff;border-color:#1a73e8;}
-
-  /* MODAL — uses direct inline styles to avoid class-toggle issues */
-  #loginModal{
-    position:fixed;
-    top:0; left:0; right:0; bottom:0;
-    background:rgba(15,23,42,.6);
-    z-index:9999;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-  .modal-box{
-    background:#fff; border-radius:16px; padding:26px;
-    width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.4);
-  }
+  #loginModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.6);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+  .modal-box{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
   .modal-box h2{font-size:18px;margin-bottom:4px;color:#0d47a1;}
   .modal-box p{font-size:13.5px;color:var(--muted);margin-bottom:16px;}
-  .login-error{
-    background:#fee2e2; color:#991b1b; font-size:13px;
-    padding:8px 12px; border-radius:8px; margin-top:10px;
-  }
-
-  /* DASHBOARD */
+  .login-error{background:#fee2e2;color:#991b1b;font-size:13px;padding:8px 12px;border-radius:8px;margin-top:10px;}
   #dashView{display:none;}
-  .stats-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-    gap:14px; margin-bottom:16px;
-  }
-  .stat-card{
-    background:#fff; border-radius:14px; padding:16px 18px;
-    border:1px solid rgba(16,24,40,.05); box-shadow:0 2px 10px rgba(16,24,40,.06);
-    display:flex; align-items:center; gap:14px;
-  }
-  .stat-icon{
-    width:46px; height:46px; border-radius:12px; display:flex;
-    align-items:center; justify-content:center; font-size:22px; flex:0 0 auto;
-  }
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:16px;}
+  .stat-card{background:#fff;border-radius:14px;padding:16px 18px;border:1px solid rgba(16,24,40,.05);box-shadow:0 2px 10px rgba(16,24,40,.06);display:flex;align-items:center;gap:14px;}
+  .stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}
   .ic-blue{background:#e8f0fe;color:#1a73e8;}
   .ic-green{background:#dcfce7;color:#16a34a;}
   .ic-orange{background:#ffedd5;color:#ea580c;}
   .ic-purple{background:#ede9fe;color:#7c3aed;}
   .stat-body small{display:block;font-size:12.5px;color:var(--muted);font-weight:500;}
   .stat-body strong{font-size:24px;font-weight:700;line-height:1.2;color:#0f172a;}
-
-  .charts-grid{
-    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;
-  }
-  .chart-box{
-    background:#fff; border-radius:14px; padding:16px;
-    border:1px solid rgba(16,24,40,.05); box-shadow:0 2px 10px rgba(16,24,40,.06);
-  }
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .chart-box{background:#fff;border-radius:14px;padding:16px;border:1px solid rgba(16,24,40,.05);box-shadow:0 2px 10px rgba(16,24,40,.06);}
   .chart-box h3{font-size:14px;font-weight:700;margin-bottom:10px;color:#0d47a1;}
   .chart-container{position:relative;height:250px;}
-
-  .toolbar{
-    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;
-    background:#fff; padding:14px; border-radius:14px;
-    border:1px solid rgba(16,24,40,.05); box-shadow:0 2px 10px rgba(16,24,40,.06);
-    align-items:center;
-  }
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;background:#fff;padding:14px;border-radius:14px;border:1px solid rgba(16,24,40,.05);box-shadow:0 2px 10px rgba(16,24,40,.06);align-items:center;}
   .toolbar .spacer{flex:1;}
-
-  table.data-table{width:100%; border-collapse:collapse; font-size:13.5px;}
-  table.data-table th{
-    background:#f1f5f9; text-align:left; padding:10px 12px;
-    font-weight:600; color:#334155; font-size:12.5px;
-    border-bottom:2px solid #e2e8f0;
-  }
-  table.data-table td{padding:10px 12px; border-bottom:1px solid #eef2f7;}
+  table.data-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.data-table th{background:#f1f5f9;text-align:left;padding:10px 12px;font-weight:600;color:#334155;font-size:12.5px;border-bottom:2px solid #e2e8f0;}
+  table.data-table td{padding:10px 12px;border-bottom:1px solid #eef2f7;}
   table.data-table tr:hover td{background:#f8fafc;}
-
-  /* TOAST */
-  .toast{
-    position:fixed; left:50%; bottom:70px;
-    transform:translate(-50%,24px);
-    background:#111827; color:#fff; padding:11px 22px;
-    border-radius:11px; font-size:14px; font-weight:500;
-    opacity:0; pointer-events:none; transition:.28s ease; z-index:10000;
-    box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:90vw; text-align:center;
-  }
+  .toast{position:fixed;left:50%;bottom:70px;transform:translate(-50%,24px);background:#111827;color:#fff;padding:11px 22px;border-radius:11px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:.28s ease;z-index:10000;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:90vw;text-align:center;}
   .toast.show{opacity:1;transform:translate(-50%,0);}
-
-  @media (max-width:720px){
-    .grid-2,.charts-grid{grid-template-columns:1fr;}
-    .field{flex-direction:column;gap:8px;}
-    .field > input, .field > .radio-row{width:100%;flex:none;}
-    .rec-head{flex-wrap:wrap;}
-    .rec-actions{margin-left:0;width:100%;}
-    .rec-meta{padding-left:0;}
-    header h1{font-size:17px;}
-  }
+  @media (max-width:720px){.grid-2,.charts-grid{grid-template-columns:1fr;}.field{flex-direction:column;gap:8px;}.field > input,.field > .radio-row{width:100%;flex:none;}.rec-head{flex-wrap:wrap;}.rec-actions{margin-left:0;width:100%;}.rec-meta{padding-left:0;}header h1{font-size:17px;}}
 </style>
 </head>
 <body>
 
-<!-- ===================== FORM VIEW ===================== -->
 <div id="formView">
   <header>
     <div class="wrap header-inner">
@@ -276,30 +118,14 @@
   </header>
 
   <main class="wrap">
-
     <section class="card">
       <h2 class="card-title">દુકાનની વિગત</h2>
       <div class="grid-2">
-        <div class="fld">
-          <label for="fillerName">ફોર્મ ભરનારનું નામ <span class="req">*</span></label>
-          <input id="fillerName" type="text" placeholder="તમારું નામ" autocomplete="off">
-        </div>
-        <div class="fld">
-          <label for="shopName">દુકાનનું નામ <span class="req">*</span></label>
-          <input id="shopName" type="text" placeholder="દા.ત. શ્રી રામ કિરાણા સ્ટોર" autocomplete="off">
-        </div>
-        <div class="fld">
-          <label for="ownerName">દુકાનદારનું નામ</label>
-          <input id="ownerName" type="text" placeholder="માલિકનું નામ" autocomplete="off">
-        </div>
-        <div class="fld">
-          <label for="mobile">મો.નંબર</label>
-          <input id="mobile" type="tel" inputmode="numeric" maxlength="15" placeholder="10 અંકનો મોબાઈલ" autocomplete="off">
-        </div>
-        <div class="fld" style="grid-column:1/-1;">
-          <label for="address">સરનામું</label>
-          <input id="address" type="text" placeholder="ગામ / વિસ્તાર / શહેર" autocomplete="off">
-        </div>
+        <div class="fld"><label for="fillerName">ફોર્મ ભરનારનું નામ <span class="req">*</span></label><input id="fillerName" type="text" placeholder="તમારું નામ" autocomplete="off"></div>
+        <div class="fld"><label for="shopName">દુકાનનું નામ <span class="req">*</span></label><input id="shopName" type="text" placeholder="દા.ત. શ્રી રામ કિરાણા સ્ટોર" autocomplete="off"></div>
+        <div class="fld"><label for="ownerName">દુકાનદારનું નામ</label><input id="ownerName" type="text" placeholder="માલિકનું નામ" autocomplete="off"></div>
+        <div class="fld"><label for="mobile">મો.નંબર</label><input id="mobile" type="tel" inputmode="numeric" maxlength="15" placeholder="10 અંકનો મોબાઈલ" autocomplete="off"></div>
+        <div class="fld" style="grid-column:1/-1;"><label for="address">સરનામું</label><input id="address" type="text" placeholder="ગામ / વિસ્તાર / શહેર" autocomplete="off"></div>
       </div>
     </section>
 
@@ -322,7 +148,6 @@
       </div>
       <div id="records" style="margin-top:14px;"></div>
     </section>
-
   </main>
 
   <footer>
@@ -331,7 +156,6 @@
   </footer>
 </div>
 
-<!-- ===================== DASHBOARD VIEW ===================== -->
 <div id="dashView">
   <header>
     <div class="wrap header-inner">
@@ -350,7 +174,7 @@
     <div class="stats-grid" id="statsGrid"></div>
 
     <div class="toolbar">
-      <button class="btn" id="syncBtn" type="button">🔄 Sheet થી સિંક કરો</button>
+      <button class="btn green" id="syncBtn" type="button">🔄 Sheet થી સિંક કરો</button>
       <button class="btn green" id="dashExportBtn" type="button">⬇ Excel નિર્યાત</button>
       <button class="btn" id="importBtn" type="button">⬆ Excel આયાત</button>
       <input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none;">
@@ -359,34 +183,17 @@
     </div>
 
     <div class="charts-grid">
-      <div class="chart-box">
-        <h3>ટીમ સભ્ય મુજબ સર્વે</h3>
-        <div class="chart-container"><canvas id="chartFiller"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>પ્રોડક્ટ મુજબ સર્વે</h3>
-        <div class="chart-container"><canvas id="chartProduct"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>ખરીદી સ્રોત</h3>
-        <div class="chart-container"><canvas id="chartSource"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>ચુકવણી પદ્ધતિ (કેશ / ક્રેડિટ)</h3>
-        <div class="chart-container"><canvas id="chartPayment"></canvas></div>
-      </div>
+      <div class="chart-box"><h3>ટીમ સભ્ય મુજબ સર્વે</h3><div class="chart-container"><canvas id="chartFiller"></canvas></div></div>
+      <div class="chart-box"><h3>પ્રોડક્ટ મુજબ સર્વે</h3><div class="chart-container"><canvas id="chartProduct"></canvas></div></div>
+      <div class="chart-box"><h3>ખરીદી સ્રોત</h3><div class="chart-container"><canvas id="chartSource"></canvas></div></div>
+      <div class="chart-box"><h3>ચુકવણી પદ્ધતિ</h3><div class="chart-container"><canvas id="chartPayment"></canvas></div></div>
     </div>
 
     <section class="card">
       <h2 class="card-title">તાજેતરના સર્વે</h2>
       <div style="overflow-x:auto;">
         <table class="data-table" id="recentTable">
-          <thead>
-            <tr>
-              <th>#</th><th>તારીખ</th><th>ભરનાર</th><th>દુકાન</th>
-              <th>મો.નંબર</th><th>સરનામું</th>
-            </tr>
-          </thead>
+          <thead><tr><th>#</th><th>તારીખ</th><th>ભરનાર</th><th>દુકાન</th><th>મો.નંબર</th><th>સરનામું</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -394,19 +201,12 @@
   </main>
 </div>
 
-<!-- ===================== LOGIN MODAL ===================== -->
 <div id="loginModal">
   <div class="modal-box">
     <h2>🔐 એડમિન પ્રવેશ</h2>
     <p>ડેશબોર્ડ જોવા માટે લોગિન કરો</p>
-    <div class="fld">
-      <label>Username</label>
-      <input type="text" id="loginUser" value="Admin" readonly>
-    </div>
-    <div class="fld" style="margin-top:10px;">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="પાસવર્ડ દાખલ કરો">
-    </div>
+    <div class="fld"><label>Username</label><input type="text" id="loginUser" value="Admin" readonly></div>
+    <div class="fld" style="margin-top:10px;"><label>Password</label><input type="password" id="loginPass" placeholder="પાસવર્ડ દાખલ કરો"></div>
     <div class="login-error" id="loginError" style="display:none;">❌ ખોટો પાસવર્ડ! ફરી પ્રયાસ કરો.</div>
     <div style="display:flex;gap:10px;margin-top:18px;">
       <button class="btn" id="loginBtn" type="button" style="flex:1;">લોગિન</button>
@@ -418,9 +218,13 @@
 <div id="toast" class="toast"></div>
 
 <script>
-/* ======================================================================
-   CONFIG
-   ====================================================================== */
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  👇 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW 👇       ║
+   ║  It must end with /exec                                      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+var API_URL = 'https://script.google.com/macros/s/AKfycbwxiQu0p4A6fADGKl1ukGlDquoStTH8xeHbRF-nr9iruWvnL2LNJasfdCr8kY7Pb1pOUQ/exec';
+
+/* ============ CONFIG ============ */
 var PRODUCTS = ['ચા', 'મરચું પાઉડર', 'હળદર પાઉડર', 'ધાણાજીરું'];
 
 var QUESTIONS = [
@@ -434,22 +238,18 @@ var QUESTIONS = [
   { id:'q8',  type:'radio',  label:'હાલ વેચાણ માટે આ પ્રોડક્ટ માર્કેટમાં જાતે જવું પડે છે કે સ્ટોર પર ડીલીવરી થાય છે?', options:['જાતે ખરીદી','સ્ટોર ડીલીવરી'] },
   { id:'q9',  type:'radio',  label:'વધારે માર્જિનમાં સારી ગુણવત્તાયુક્ત પ્રોડક્ટ મળે તો સ્ટોરમાં વેચાણ માટે રાખશો?', options:['હા','ના'] },
   { id:'q10', type:'radio',  label:'ખરીદી ક્રેડિટ કે કેશમાં કરો છો?', options:['ક્રેડિટ','કેશ'] },
-  { id:'q11', type:'text',   label:'Distributor / Wholesaler / એજન્સીનો સંપર્ક વિગત (નામ / મો.નંબર / એજન્સી નામ)' }
+  { id:'q11', type:'text',   label:'Distributor / Wholesaler / એજન્સીનો સંપર્ક વિગત' }
 ];
 
-var STORAGE_KEY = 'market_survey_data_v3';
-    var API_URL = 'https://script.google.com/macros/s/AKfycbwdBxT3ZrPsOAPNoFShSGnk9Ogqy_PEbkOM8z2BmVBHv6JhBGU4OJVp6BBtVADYzIwEXw/exec';
-var AUTH_KEY    = 'market_survey_auth_v3';
-var ADMIN_USER  = 'Admin';
+var STORAGE_KEY = 'market_survey_data_v5';
+var AUTH_KEY    = 'market_survey_auth_v5';
 var ADMIN_PASS  = 'Locklink12*';
 
 var surveys = [];
 var editingId = null;
 var charts = {};
 
-/* ======================================================================
-   HELPERS
-   ====================================================================== */
+/* ============ HELPERS ============ */
 var GUJ_DIGITS = '૦૧૨૩૪૫૬૭૮૯';
 function toGuj(v){ return String(v).replace(/\d/g, function(d){ return GUJ_DIGITS[+d]; }); }
 function pad2(n){ return String(n).padStart(2,'0'); }
@@ -468,7 +268,6 @@ function fileStamp(){
   var d = new Date();
   return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+'_'+pad2(d.getHours())+pad2(d.getMinutes());
 }
-
 var toastTimer = null;
 function toast(msg){
   var el = document.getElementById('toast');
@@ -476,39 +275,27 @@ function toast(msg){
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 3000);
 }
 
-/* ======================================================================
-   STORAGE (all wrapped in try/catch)
-   ====================================================================== */
+/* ============ STORAGE ============ */
 function loadData(){
   try{
     var raw = localStorage.getItem(STORAGE_KEY);
     surveys = raw ? JSON.parse(raw) : [];
     if (!Array.isArray(surveys)) surveys = [];
-  }catch(e){
-    console.warn('Load error:', e);
-    surveys = [];
-  }
+  }catch(e){ surveys = []; }
 }
 function persist(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(surveys));
-  }catch(e){
-    toast('⚠ સ્ટોરેજ ભરાઈ ગયું');
-  }
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(surveys)); }
+  catch(e){ toast('⚠ સ્ટોરેજ ભરાઈ ગયું'); }
 }
 
-/* ======================================================================
-   BUILD FORM
-   ====================================================================== */
+/* ============ BUILD FORM ============ */
 function buildForm(){
-  var tabsEl   = document.getElementById('tabs');
+  var tabsEl = document.getElementById('tabs');
   var panelsEl = document.getElementById('panels');
-  tabsEl.innerHTML = '';
-  panelsEl.innerHTML = '';
-
+  tabsEl.innerHTML = ''; panelsEl.innerHTML = '';
   PRODUCTS.forEach(function(prod, pi){
     var tab = document.createElement('button');
     tab.type = 'button';
@@ -517,27 +304,21 @@ function buildForm(){
     tab.textContent = prod;
     tab.addEventListener('click', function(){ switchTab(pi); });
     tabsEl.appendChild(tab);
-
     var panel = document.createElement('div');
     panel.className = 'panel' + (pi === 0 ? ' active' : '');
     panel.dataset.index = pi;
-
     QUESTIONS.forEach(function(q, qi){ panel.appendChild(buildField(pi, qi, q)); });
     panelsEl.appendChild(panel);
   });
 }
-
 function buildField(pi, qi, q){
   var wrap = document.createElement('div');
   wrap.className = 'field';
-
   var fieldName = 'p'+pi+'_'+q.id;
-
   var lab = document.createElement('div');
   lab.className = 'q-label';
   lab.innerHTML = '<span class="q-no">'+toGuj(pad2(qi+1))+'</span><span>'+esc(q.label)+'</span>';
   wrap.appendChild(lab);
-
   if (q.type === 'radio'){
     var box = document.createElement('div');
     box.className = 'radio-row';
@@ -551,27 +332,18 @@ function buildField(pi, qi, q){
   } else {
     var inp = document.createElement('input');
     inp.type = (q.type === 'number') ? 'number' : 'text';
-    inp.id = fieldName;
-    inp.name = fieldName;
-    inp.autocomplete = 'off';
+    inp.id = fieldName; inp.name = fieldName; inp.autocomplete = 'off';
     if (q.type === 'number') inp.min = '0';
     wrap.appendChild(inp);
   }
   return wrap;
 }
-
 function switchTab(i){
-  document.querySelectorAll('#tabs .tab').forEach(function(t){
-    t.classList.toggle('active', Number(t.dataset.index) === i);
-  });
-  document.querySelectorAll('#panels .panel').forEach(function(p){
-    p.classList.toggle('active', Number(p.dataset.index) === i);
-  });
+  document.querySelectorAll('#tabs .tab').forEach(function(t){ t.classList.toggle('active', Number(t.dataset.index) === i); });
+  document.querySelectorAll('#panels .panel').forEach(function(p){ p.classList.toggle('active', Number(p.dataset.index) === i); });
 }
 
-/* ======================================================================
-   READ / FILL / CLEAR FORM
-   ====================================================================== */
+/* ============ READ / FILL / CLEAR ============ */
 function readForm(){
   return {
     fillerName: document.getElementById('fillerName').value.trim(),
@@ -595,22 +367,18 @@ function readForm(){
     })
   };
 }
-
 function fillForm(s){
   document.getElementById('fillerName').value = s.fillerName || '';
-  document.getElementById('shopName').value   = s.shopName || '';
-  document.getElementById('ownerName').value  = s.ownerName || '';
-  document.getElementById('address').value    = s.address || '';
-  document.getElementById('mobile').value     = s.mobile || '';
-
+  document.getElementById('shopName').value = s.shopName || '';
+  document.getElementById('ownerName').value = s.ownerName || '';
+  document.getElementById('address').value = s.address || '';
+  document.getElementById('mobile').value = s.mobile || '';
   PRODUCTS.forEach(function(_, pi){
     var ans = (s.products && s.products[pi]) || {};
     QUESTIONS.forEach(function(q){
       var name = 'p'+pi+'_'+q.id;
       if (q.type === 'radio'){
-        document.querySelectorAll('input[name="'+name+'"]').forEach(function(r){
-          r.checked = (r.value === ans[q.id]);
-        });
+        document.querySelectorAll('input[name="'+name+'"]').forEach(function(r){ r.checked = (r.value === ans[q.id]); });
       } else {
         var el = document.getElementById(name);
         if (el) el.value = ans[q.id] || '';
@@ -618,18 +386,12 @@ function fillForm(s){
     });
   });
 }
-
 function clearForm(){
-  ['fillerName','shopName','ownerName','address','mobile'].forEach(function(id){
-    document.getElementById(id).value = '';
-  });
-  document.querySelectorAll('#panels input[type=text], #panels input[type=number]')
-    .forEach(function(el){ el.value = ''; });
-  document.querySelectorAll('#panels input[type=radio]')
-    .forEach(function(el){ el.checked = false; });
+  ['fillerName','shopName','ownerName','address','mobile'].forEach(function(id){ document.getElementById(id).value = ''; });
+  document.querySelectorAll('#panels input[type=text], #panels input[type=number]').forEach(function(el){ el.value = ''; });
+  document.querySelectorAll('#panels input[type=radio]').forEach(function(el){ el.checked = false; });
   switchTab(0);
 }
-
 function resetForm(){
   clearForm();
   editingId = null;
@@ -637,22 +399,21 @@ function resetForm(){
   document.getElementById('cancelBtn').style.display = 'none';
 }
 
-/* ======================================================================
-   SAVE / EDIT / DELETE
-   ====================================================================== */
+/* ============ SAVE / EDIT / DELETE ============ */
 function handleSave(){
   var data = readForm();
+  if (!data.fillerName){ toast('કૃપા કરીને ફોર્મ ભરનારનું નામ ભરો'); document.getElementById('fillerName').focus(); return; }
+  if (!data.shopName){ toast('કૃપા કરીને દુકાનનું નામ ભરો'); document.getElementById('shopName').focus(); return; }
 
-  if (!data.fillerName){
-    toast('કૃપા કરીને ફોર્મ ભરનારનું નામ ભરો');
-    document.getElementById('fillerName').focus();
-    return;
-  }
-  if (!data.shopName){
-    toast('કૃપા કરીને દુકાનનું નામ ભરો');
-    document.getElementById('shopName').focus();
-    return;
-  }
+  var payload = {
+    timestamp: new Date().toISOString(),
+    fillerName: data.fillerName,
+    shopName: data.shopName,
+    ownerName: data.ownerName,
+    mobile: data.mobile,
+    address: data.address,
+    products: data.products
+  };
 
   if (editingId){
     var idx = surveys.findIndex(function(s){ return s.id === editingId; });
@@ -664,31 +425,33 @@ function handleSave(){
     document.getElementById('cancelBtn').style.display = 'none';
     toast('✔ સર્વે અપડેટ થયો');
   } else {
-    var obj = { id: uid(), createdAt: new Date().toISOString(), updatedAt: null };
+    var obj = { id: uid(), createdAt: payload.timestamp, updatedAt: null };
     Object.assign(obj, data);
     surveys.push(obj);
     toast('✔ સર્વે સાચવવામાં આવ્યો');
+    sendToSheet(payload);
   }
-// Send to Google Sheets (background sync)
-fetch(API_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        timestamp: obj.createdAt,
-        fillerName: data.fillerName,
-        shopName: data.shopName,
-        ownerName: data.ownerName,
-        mobile: data.mobile,
-        address: data.address,
-        products: data.products
-    })
-}).catch(function (err) {
-    console.warn('Sheet sync failed:', err);
-});
+
   persist();
   resetForm();
   renderRecords();
+}
+
+function sendToSheet(payload){
+  if (!API_URL || API_URL.indexOf('PASTE_') === 0){
+    console.warn('API_URL not set — sheet sync skipped');
+    return;
+  }
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(function(){
+    console.log('✔ Sheet sync sent');
+  }).catch(function(err){
+    console.warn('Sheet sync failed:', err);
+  });
 }
 
 function startEdit(id){
@@ -700,130 +463,75 @@ function startEdit(id){
   document.getElementById('cancelBtn').style.display = 'inline-block';
   switchTab(0);
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  toast('એડિટ મોડ — ફેરફાર કરીને અપડેટ કરો');
+  toast('એડિટ મોડ');
 }
-
 function deleteSurvey(id){
   if (!confirm('આ સર્વે ડિલીટ કરવો છે?')) return;
   surveys = surveys.filter(function(s){ return s.id !== id; });
   if (editingId === id) resetForm();
-  persist();
-  renderRecords();
-  toast('સર્વે ડિલીટ થયો');
+  persist(); renderRecords(); toast('સર્વે ડિલીટ થયો');
 }
-
 function clearAllSurveys(){
   if (!surveys.length){ toast('ડિલીટ કરવા માટે ડેટા નથી'); return; }
   if (!confirm('બધા '+surveys.length+' સર્વે કાયમ માટે ડિલીટ થશે. ચાલુ રાખવું?')) return;
-  surveys = [];
-  persist();
-  resetForm();
-  renderRecords();
+  surveys = []; persist(); resetForm(); renderRecords();
   if (isLoggedIn()) renderDashboard();
   toast('બધો ડેટા ડિલીટ થયો');
 }
 
-/* ======================================================================
-   RECORDS LIST
-   ====================================================================== */
+/* ============ RECORDS LIST ============ */
 function renderRecords(){
   var box = document.getElementById('records');
   document.getElementById('surveyCount').textContent = toGuj(surveys.length);
   document.getElementById('listCount').textContent = toGuj(surveys.length);
-
   if (!surveys.length){
     box.innerHTML = '<p class="empty">હજી કોઈ સર્વે સાચવેલ નથી. ઉપરનું ફોર્મ ભરીને “સર્વે સાચવો” દબાવો.</p>';
     return;
   }
-
   box.innerHTML = '';
   surveys.slice().reverse().forEach(function(s){
     var idx = surveys.indexOf(s) + 1;
     var div = document.createElement('div');
     div.className = 'record';
-    div.innerHTML =
-      '<div class="rec-head">' +
-        '<span class="rec-no">'+toGuj(idx)+'</span>' +
-        '<div>' +
-          '<div class="rec-title">'+esc(s.shopName)+'</div>' +
-          '<div class="rec-sub">' +
-            '<span class="badge">👤 '+esc(s.fillerName || '—')+'</span>' +
-            ' &nbsp; '+esc(s.ownerName || '—')+' &nbsp;•&nbsp; '+esc(s.mobile || '—') +
-          '</div>' +
-        '</div>' +
-        '<div class="rec-actions">' +
-          '<button class="btn small ghost" type="button" data-act="edit" data-id="'+s.id+'">એડિટ</button>' +
-          '<button class="btn small danger" type="button" data-act="del" data-id="'+s.id+'">ડિલીટ</button>' +
-        '</div>' +
-      '</div>' +
-      '<div class="rec-meta">' +
-        esc(s.address || '—') + ' &nbsp;|&nbsp; ' + fmtDateTime(s.createdAt) +
-        (s.updatedAt ? ' &nbsp;|&nbsp; અપડેટ: ' + fmtDateTime(s.updatedAt) : '') +
-      '</div>';
+    div.innerHTML = '<div class="rec-head"><span class="rec-no">'+toGuj(idx)+'</span><div><div class="rec-title">'+esc(s.shopName)+'</div><div class="rec-sub"><span class="badge">👤 '+esc(s.fillerName || '—')+'</span> &nbsp; '+esc(s.ownerName || '—')+' &nbsp;•&nbsp; '+esc(s.mobile || '—')+'</div></div><div class="rec-actions"><button class="btn small ghost" type="button" data-act="edit" data-id="'+s.id+'">એડિટ</button><button class="btn small danger" type="button" data-act="del" data-id="'+s.id+'">ડિલીટ</button></div></div><div class="rec-meta">'+esc(s.address || '—')+' &nbsp;|&nbsp; '+fmtDateTime(s.createdAt)+(s.updatedAt ? ' &nbsp;|&nbsp; અપડેટ: '+fmtDateTime(s.updatedAt) : '')+'</div>';
     box.appendChild(div);
   });
 }
 
-/* ======================================================================
-   AUTH
-   ====================================================================== */
-function isLoggedIn(){
-  try{
-    return sessionStorage.getItem(AUTH_KEY) === 'true';
-  }catch(e){
-    return false;
-  }
-}
-
-/* GLOBAL function — called via inline onclick on the footer button */
+/* ============ AUTH ============ */
+function isLoggedIn(){ try{ return sessionStorage.getItem(AUTH_KEY) === 'true'; }catch(e){ return false; } }
 window.openLoginModal = function(){
   try{
-    if (isLoggedIn()){
-      openDashboard();
-      return;
-    }
+    if (isLoggedIn()){ openDashboard(); return; }
     var m = document.getElementById('loginModal');
     m.style.display = 'flex';
-    var pass = document.getElementById('loginPass');
-    pass.value = '';
-    var err = document.getElementById('loginError');
-    err.style.display = 'none';
-    setTimeout(function(){ pass.focus(); }, 100);
-  }catch(e){
-    alert('Login error: ' + e.message);
-  }
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    setTimeout(function(){ document.getElementById('loginPass').focus(); }, 100);
+  }catch(e){ alert('Login error: ' + e.message); }
 };
-
-function hideLogin(){
-  document.getElementById('loginModal').style.display = 'none';
-}
-
+function hideLogin(){ document.getElementById('loginModal').style.display = 'none'; }
 function handleLogin(){
   var pass = document.getElementById('loginPass').value;
   if (pass === ADMIN_PASS){
     try{ sessionStorage.setItem(AUTH_KEY, 'true'); }catch(e){}
-    hideLogin();
-    openDashboard();
-    toast('✔ સફળ લોગિન');
+    hideLogin(); openDashboard(); toast('✔ સફળ લોગિન');
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
 }
-
 function logout(){
   try{ sessionStorage.removeItem(AUTH_KEY); }catch(e){}
-  closeDashboard();
-  toast('લોગ આઉટ થયું');
+  closeDashboard(); toast('લોગ આઉટ થયું');
 }
 
-/* ======================================================================
-   VIEW SWITCH
-   ====================================================================== */
+/* ============ VIEW SWITCH ============ */
 function openDashboard(){
   document.getElementById('formView').style.display = 'none';
   document.getElementById('dashView').style.display = 'block';
   window.scrollTo(0,0);
   renderDashboard();
+  syncFromSheet(true);
 }
 function closeDashboard(){
   document.getElementById('dashView').style.display = 'none';
@@ -831,339 +539,248 @@ function closeDashboard(){
   window.scrollTo(0,0);
 }
 
-/* ======================================================================
-   DASHBOARD
-   ====================================================================== */
-function renderDashboard(){
-  renderStats();
-  renderCharts();
-  renderRecentTable();
+/* ============ SYNC FROM SHEET (uses column positions) ============ */
+function syncFromSheet(silent){
+  if (!API_URL || API_URL.indexOf('PASTE_') === 0){
+    if (!silent) toast('⚠ API_URL સેટ કરેલ નથી');
+    return;
+  }
+  if (!silent) toast('🔄 Sheet થી ડેટા લાવી રહ્યા છીએ...');
+
+  fetch(API_URL, { method: 'GET', redirect: 'follow' })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.status !== 'success'){
+        if (!silent) toast('❌ Sheet error: ' + (res.message || 'unknown'));
+        return;
+      }
+      var rows = res.data || [];
+      if (!rows.length){
+        if (!silent) toast('Sheet માં કોઈ ડેટા નથી');
+        return;
+      }
+      var imported = rows.map(function(row){
+        var products = [];
+        try {
+          var raw = row.products || '[]';
+          if (typeof raw === 'string') products = JSON.parse(raw);
+          else products = raw;
+        } catch(e){ products = []; }
+
+        // Ensure products is an array with PRODUCTS.length entries
+        if (!Array.isArray(products)) products = [];
+        while (products.length < PRODUCTS.length){
+          var empty = {};
+          QUESTIONS.forEach(function(q){ empty[q.id] = ''; });
+          products.push(empty);
+        }
+
+        return {
+          id: uid() + '_' + Math.random().toString(36).slice(2,6),
+          createdAt: row.timestamp || new Date().toISOString(),
+          updatedAt: null,
+          fillerName: row.fillerName || '',
+          shopName: row.shopName || '',
+          ownerName: row.ownerName || '',
+          mobile: row.mobile || '',
+          address: row.address || '',
+          products: products
+        };
+      });
+      surveys = imported;
+      persist();
+      renderRecords();
+      renderDashboard();
+      toast('✔ ' + imported.length + ' સર્વે Sheet થી સિંક થયા');
+    })
+    .catch(function(err){
+      console.error(err);
+      if (!silent) toast('❌ સિંક ત્રુટિ — કન્સોલ તપાસો');
+    });
 }
 
+/* ============ DASHBOARD ============ */
+function renderDashboard(){
+  renderStats(); renderCharts(); renderRecentTable();
+}
 function renderStats(){
   var total = surveys.length;
   var today = new Date(); today.setHours(0,0,0,0);
   var todayCount = surveys.filter(function(s){ return new Date(s.createdAt) >= today; }).length;
   var fillers = new Set(surveys.map(function(s){ return s.fillerName; }).filter(Boolean));
   var shops = new Set(surveys.map(function(s){ return s.shopName; }).filter(Boolean));
-
   document.getElementById('statsGrid').innerHTML =
-    '<div class="stat-card"><div class="stat-icon ic-blue">📋</div>' +
-    '<div class="stat-body"><small>કુલ સર્વે</small><strong>'+toGuj(total)+'</strong></div></div>' +
-    '<div class="stat-card"><div class="stat-icon ic-green">📅</div>' +
-    '<div class="stat-body"><small>આજના સર્વે</small><strong>'+toGuj(todayCount)+'</strong></div></div>' +
-    '<div class="stat-card"><div class="stat-icon ic-orange">👥</div>' +
-    '<div class="stat-body"><small>ટીમ સભ્યો</small><strong>'+toGuj(fillers.size)+'</strong></div></div>' +
-    '<div class="stat-card"><div class="stat-icon ic-purple">🏪</div>' +
-    '<div class="stat-body"><small>કુલ દુકાનો</small><strong>'+toGuj(shops.size)+'</strong></div></div>';
+    '<div class="stat-card"><div class="stat-icon ic-blue">📋</div><div class="stat-body"><small>કુલ સર્વે</small><strong>'+toGuj(total)+'</strong></div></div>' +
+    '<div class="stat-card"><div class="stat-icon ic-green">📅</div><div class="stat-body"><small>આજના સર્વે</small><strong>'+toGuj(todayCount)+'</strong></div></div>' +
+    '<div class="stat-card"><div class="stat-icon ic-orange">👥</div><div class="stat-body"><small>ટીમ સભ્યો</small><strong>'+toGuj(fillers.size)+'</strong></div></div>' +
+    '<div class="stat-card"><div class="stat-icon ic-purple">🏪</div><div class="stat-body"><small>કુલ દુકાનો</small><strong>'+toGuj(shops.size)+'</strong></div></div>';
 }
-
-function destroyCharts(){
-  Object.values(charts).forEach(function(c){ try{ c.destroy(); }catch(e){} });
-  charts = {};
-}
-
+function destroyCharts(){ Object.values(charts).forEach(function(c){ try{ c.destroy(); }catch(e){} }); charts = {}; }
 function renderCharts(){
-  if (typeof Chart === 'undefined'){
-    console.warn('Chart.js not loaded');
-    return;
-  }
+  if (typeof Chart === 'undefined') return;
   destroyCharts();
-
-  /* 1) Surveys per filler */
   var fillerCounts = {};
-  surveys.forEach(function(s){
-    var k = s.fillerName || '(અજ્ઞાત)';
-    fillerCounts[k] = (fillerCounts[k] || 0) + 1;
-  });
+  surveys.forEach(function(s){ var k = s.fillerName || '(અજ્ઞાત)'; fillerCounts[k] = (fillerCounts[k]||0)+1; });
   var fillerLabels = Object.keys(fillerCounts);
-  var fillerData   = Object.values(fillerCounts);
-
+  var fillerData = Object.values(fillerCounts);
   charts.filler = new Chart(document.getElementById('chartFiller'), {
-    type: 'bar',
-    data: {
-      labels: fillerLabels.length ? fillerLabels : ['કોઈ ડેટા નથી'],
-      datasets: [{ label:'સર્વે', data: fillerData.length ? fillerData : [0],
-        backgroundColor:'#1a73e8', borderRadius:8 }]
-    },
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false} },
-      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
+    type:'bar',
+    data:{ labels: fillerLabels.length?fillerLabels:['કોઈ ડેટા નથી'], datasets:[{label:'સર્વે',data:fillerData.length?fillerData:[0],backgroundColor:'#1a73e8',borderRadius:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
   });
-
-  /* 2) Surveys per product */
-  var productCounts = PRODUCTS.map(function(_, pi){
+  var productCounts = PRODUCTS.map(function(_,pi){
     return surveys.filter(function(s){
       var p = s.products && s.products[pi];
       if (!p) return false;
-      return Object.values(p).some(function(v){ return v !== '' && v != null; });
+      return Object.keys(p).some(function(k){ return p[k] !== '' && p[k] != null; });
     }).length;
   });
-
   charts.product = new Chart(document.getElementById('chartProduct'), {
-    type: 'bar',
-    data: {
-      labels: PRODUCTS,
-      datasets: [{ label:'સર્વે', data: productCounts,
-        backgroundColor:['#16a34a','#ea580c','#7c3aed','#0891b2'], borderRadius:8 }]
-    },
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false} },
-      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
+    type:'bar',
+    data:{ labels: PRODUCTS, datasets:[{label:'સર્વે',data:productCounts,backgroundColor:['#16a34a','#ea580c','#7c3aed','#0891b2'],borderRadius:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
   });
-
-  /* 3) Purchase source (q3) */
   var sourceCounts = {};
-  surveys.forEach(function(s){
-    (s.products || []).forEach(function(p){
-      if (p && p.q3){ sourceCounts[p.q3] = (sourceCounts[p.q3] || 0) + 1; }
-    });
-  });
+  surveys.forEach(function(s){ (s.products||[]).forEach(function(p){ if (p && p.q3){ sourceCounts[p.q3] = (sourceCounts[p.q3]||0)+1; } }); });
   var srcLabels = Object.keys(sourceCounts);
-  var srcData   = Object.values(sourceCounts);
-
+  var srcData = Object.values(sourceCounts);
   charts.source = new Chart(document.getElementById('chartSource'), {
-    type: 'doughnut',
-    data: {
-      labels: srcLabels.length ? srcLabels : ['કોઈ ડેટા નથી'],
-      datasets: [{ data: srcData.length ? srcData : [1],
-        backgroundColor:['#1a73e8','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626'] }]
-    },
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom' } } }
+    type:'doughnut',
+    data:{ labels: srcLabels.length?srcLabels:['કોઈ ડેટા નથી'], datasets:[{data:srcData.length?srcData:[1],backgroundColor:['#1a73e8','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}
   });
-
-  /* 4) Payment method (q10) */
-  var payCounts = { 'કેશ':0, 'ક્રેડિટ':0 };
-  surveys.forEach(function(s){
-    (s.products || []).forEach(function(p){
-      if (p && p.q10 && payCounts[p.q10] !== undefined){ payCounts[p.q10]++; }
-    });
-  });
-
+  var payCounts = {'કેશ':0,'ક્રેડિટ':0};
+  surveys.forEach(function(s){ (s.products||[]).forEach(function(p){ if (p && p.q10 && payCounts[p.q10] !== undefined){ payCounts[p.q10]++; } }); });
   charts.payment = new Chart(document.getElementById('chartPayment'), {
-    type: 'pie',
-    data: {
-      labels: Object.keys(payCounts),
-      datasets: [{ data: Object.values(payCounts),
-        backgroundColor:['#16a34a','#ea580c'] }]
-    },
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom' } } }
+    type:'pie',
+    data:{ labels: Object.keys(payCounts), datasets:[{data:Object.values(payCounts),backgroundColor:['#16a34a','#ea580c']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}
   });
 }
-
 function renderRecentTable(){
   var tbody = document.querySelector('#recentTable tbody');
   var recent = surveys.slice().reverse().slice(0, 20);
-  if (!recent.length){
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#6b7280;padding:20px;">કોઈ ડેટા નથી</td></tr>';
-    return;
-  }
+  if (!recent.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#6b7280;padding:20px;">કોઈ ડેટા નથી</td></tr>'; return; }
   tbody.innerHTML = recent.map(function(s, i){
-    return '<tr>' +
-      '<td>'+toGuj(i+1)+'</td>' +
-      '<td>'+fmtDateTime(s.createdAt)+'</td>' +
-      '<td><span class="badge">👤 '+esc(s.fillerName || '—')+'</span></td>' +
-      '<td>'+esc(s.shopName || '—')+'</td>' +
-      '<td>'+esc(s.mobile || '—')+'</td>' +
-      '<td>'+esc(s.address || '—')+'</td>' +
-    '</tr>';
+    return '<tr><td>'+toGuj(i+1)+'</td><td>'+fmtDateTime(s.createdAt)+'</td><td><span class="badge">👤 '+esc(s.fillerName||'—')+'</span></td><td>'+esc(s.shopName||'—')+'</td><td>'+esc(s.mobile||'—')+'</td><td>'+esc(s.address||'—')+'</td></tr>';
   }).join('');
 }
 
-/* ======================================================================
-   EXCEL EXPORT
-   ====================================================================== */
+/* ============ EXCEL EXPORT ============ */
 function buildLongRows(){
-  var header = ['ક્રમ','તારીખ/સમય','ફોર્મ ભરનારનું નામ','દુકાનનું નામ','દુકાનદારનું નામ',
-    'સરનામું','મો.નંબર','પ્રોડક્ટ']
-    .concat(QUESTIONS.map(function(q, i){ return toGuj(pad2(i+1)) + '. ' + q.label; }));
-  var rows = [header];
-  var n = 0;
-
+  var header = ['ક્રમ','તારીખ/સમય','ફોર્મ ભરનારનું નામ','દુકાનનું નામ','દુકાનદારનું નામ','સરનામું','મો.નંબર','પ્રોડક્ટ'].concat(QUESTIONS.map(function(q,i){ return toGuj(pad2(i+1))+'. '+q.label; }));
+  var rows = [header]; var n = 0;
   surveys.forEach(function(s){
     PRODUCTS.forEach(function(prod, pi){
       n++;
       var ans = (s.products && s.products[pi]) || {};
-      var row = [n, fmtDateTime(s.createdAt), s.fillerName || '', s.shopName || '',
-        s.ownerName || '', s.address || '', s.mobile || '', prod];
-      QUESTIONS.forEach(function(q){ row.push(ans[q.id] || ''); });
+      var row = [n, fmtDateTime(s.createdAt), s.fillerName||'', s.shopName||'', s.ownerName||'', s.address||'', s.mobile||'', prod];
+      QUESTIONS.forEach(function(q){ row.push(ans[q.id]||''); });
       rows.push(row);
     });
   });
   return rows;
 }
-
 function buildWideRows(){
-  var header = ['ક્રમ','તારીખ/સમય','ફોર્મ ભરનારનું નામ','દુકાનનું નામ','દુકાનદારનું નામ',
-    'સરનામું','મો.નંબર'];
-  PRODUCTS.forEach(function(p){
-    QUESTIONS.forEach(function(q, i){
-      header.push(p + ' - ' + toGuj(pad2(i+1)) + '. ' + q.label);
-    });
-  });
-
+  var header = ['ક્રમ','તારીખ/સમય','ફોર્મ ભરનારનું નામ','દુકાનનું નામ','દુકાનદારનું નામ','સરનામું','મો.નંબર'];
+  PRODUCTS.forEach(function(p){ QUESTIONS.forEach(function(q,i){ header.push(p+' - '+toGuj(pad2(i+1))+'. '+q.label); }); });
   var rows = [header];
   surveys.forEach(function(s, si){
-    var row = [si+1, fmtDateTime(s.createdAt), s.fillerName || '', s.shopName || '',
-      s.ownerName || '', s.address || '', s.mobile || ''];
-    PRODUCTS.forEach(function(_, pi){
-      var ans = (s.products && s.products[pi]) || {};
-      QUESTIONS.forEach(function(q){ row.push(ans[q.id] || ''); });
-    });
+    var row = [si+1, fmtDateTime(s.createdAt), s.fillerName||'', s.shopName||'', s.ownerName||'', s.address||'', s.mobile||''];
+    PRODUCTS.forEach(function(_, pi){ var ans = (s.products && s.products[pi]) || {}; QUESTIONS.forEach(function(q){ row.push(ans[q.id]||''); }); });
     rows.push(row);
   });
   return rows;
 }
-
 function downloadHtmlXls(rows, filename){
-  var cells = rows.map(function(r, ri){
-    var tag = ri === 0 ? 'th' : 'td';
-    return '<tr>' + r.map(function(c){ return '<'+tag+'>'+esc(c)+'</'+tag+'>'; }).join('') + '</tr>';
-  }).join('');
-  var html = '<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8">' +
-    '<style>th{background:#1a73e8;color:#fff;font-weight:bold;}td,th{border:1px solid #ccc;padding:4px;}</style>' +
-    '</head><body><table border="1">' + cells + '</table></body></html>';
-  var blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8' });
+  var cells = rows.map(function(r, ri){ var tag = ri === 0 ? 'th' : 'td'; return '<tr>' + r.map(function(c){ return '<'+tag+'>'+esc(c)+'</'+tag+'>'; }).join('') + '</tr>'; }).join('');
+  var html = '<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><style>th{background:#1a73e8;color:#fff;font-weight:bold;}td,th{border:1px solid #ccc;padding:4px;}</style></head><body><table border="1">'+cells+'</table></body></html>';
+  var blob = new Blob(['\ufeff'+html], {type:'application/vnd.ms-excel;charset=utf-8'});
   var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = filename;
+  var a = document.createElement('a'); a.href = url; a.download = filename;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
 }
-
 function exportExcel(){
   if (!surveys.length){ toast('નિર્યાત કરવા માટે ડેટા નથી'); return; }
   var longRows = buildLongRows();
   var wideRows = buildWideRows();
   var baseName = 'Market_Survey_' + fileStamp();
-
-  if (typeof XLSX === 'undefined'){
-    downloadHtmlXls(longRows, baseName + '.xls');
-    toast('✔ Excel ફાઈલ ડાઉનલોડ (offline)');
-    return;
-  }
+  if (typeof XLSX === 'undefined'){ downloadHtmlXls(longRows, baseName+'.xls'); toast('✔ Excel ડાઉનલોડ (offline)'); return; }
   try{
     var wb = XLSX.utils.book_new();
     var ws1 = XLSX.utils.aoa_to_sheet(longRows);
     ws1['!cols'] = longRows[0].map(function(_, i){ return { wch: i < 8 ? 18 : 22 }; });
     XLSX.utils.book_append_sheet(wb, ws1, 'Survey Data');
-
     var ws2 = XLSX.utils.aoa_to_sheet(wideRows);
     ws2['!cols'] = wideRows[0].map(function(){ return { wch: 16 }; });
     XLSX.utils.book_append_sheet(wb, ws2, 'Wide Format');
-
-    XLSX.writeFile(wb, baseName + '.xlsx');
+    XLSX.writeFile(wb, baseName+'.xlsx');
     toast('✔ Excel ફાઈલ ડાઉનલોડ થઈ');
-  }catch(err){
-    console.error(err);
-    downloadHtmlXls(longRows, baseName + '.xls');
-    toast('✔ Excel ફાઈલ ડાઉનલોડ થઈ');
-  }
+  }catch(err){ console.error(err); downloadHtmlXls(longRows, baseName+'.xls'); }
 }
 
-/* ======================================================================
-   EXCEL IMPORT
-   ====================================================================== */
+/* ============ EXCEL IMPORT ============ */
 function handleImportFile(file){
   if (!file) return;
-  if (typeof XLSX === 'undefined'){ toast('⚠ Excel લાઈબ્રેરી લોડ નથી થઈ'); return; }
-
+  if (typeof XLSX === 'undefined'){ toast('⚠ Excel લાઈબ્રેરી લોડ નથી'); return; }
   var reader = new FileReader();
   reader.onload = function(e){
     try{
       var data = new Uint8Array(e.target.result);
-      var wb = XLSX.read(data, { type: 'array' });
+      var wb = XLSX.read(data, {type:'array'});
       var ws = wb.Sheets[wb.SheetNames[0]];
-      var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-
+      var rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
       if (rows.length < 2){ toast('⚠ ફાઈલમાં ડેટા નથી'); return; }
-
       var groups = {};
       for (var i = 1; i < rows.length; i++){
         var r = rows[i];
         if (!r || r.length < 8) continue;
-
-        var created  = String(r[1] || '').trim();
-        var filler   = String(r[2] || '').trim();
-        var shop     = String(r[3] || '').trim();
-        var owner    = String(r[4] || '').trim();
-        var address  = String(r[5] || '').trim();
-        var mobile   = String(r[6] || '').trim();
-        var product  = String(r[7] || '').trim();
-
+        var created = String(r[1]||'').trim();
+        var filler = String(r[2]||'').trim();
+        var shop = String(r[3]||'').trim();
+        var owner = String(r[4]||'').trim();
+        var address = String(r[5]||'').trim();
+        var mobile = String(r[6]||'').trim();
+        var product = String(r[7]||'').trim();
         if (!shop) continue;
-
-        var key = created + '||' + shop + '||' + filler;
+        var key = created+'||'+shop+'||'+filler;
         if (!groups[key]){
           groups[key] = {
-            id: uid() + '_' + i,
-            createdAt: parseDateTime(created) || new Date().toISOString(),
-            updatedAt: null,
-            fillerName: filler, shopName: shop, ownerName: owner,
-            address: address, mobile: mobile,
-            products: PRODUCTS.map(function(){
-              var o = {}; QUESTIONS.forEach(function(q){ o[q.id] = ''; }); return o;
-            })
+            id: uid()+'_'+i, createdAt: parseDateTime(created)||new Date().toISOString(), updatedAt:null,
+            fillerName: filler, shopName: shop, ownerName: owner, address: address, mobile: mobile,
+            products: PRODUCTS.map(function(){ var o = {}; QUESTIONS.forEach(function(q){ o[q.id] = ''; }); return o; })
           };
         }
         var pi = PRODUCTS.indexOf(product);
-        if (pi > -1){
-          QUESTIONS.forEach(function(q, qi){
-            groups[key].products[pi][q.id] = String(r[8 + qi] || '').trim();
-          });
-        }
+        if (pi > -1){ QUESTIONS.forEach(function(q, qi){ groups[key].products[pi][q.id] = String(r[8+qi]||'').trim(); }); }
       }
-
       var imported = Object.values(groups);
       if (!imported.length){ toast('⚠ યોગ્ય ડેટા મળ્યો નથી'); return; }
-      if (!confirm(imported.length + ' સર્વે મળ્યા. હાલના ડેટામાં ઉમેરવા?')) return;
-
+      if (!confirm(imported.length+' સર્વે મળ્યા. ઉમેરવા?')) return;
       surveys = surveys.concat(imported);
-      persist();
-      renderRecords();
-      renderDashboard();
-      toast('✔ ' + imported.length + ' સર્વે આયાત થયા');
-    }catch(err){
-      console.error(err);
-      toast('❌ ફાઈલ વાંચવામાં ત્રુટિ');
-    }
+      persist(); renderRecords(); renderDashboard();
+      toast('✔ '+imported.length+' સર્વે આયાત થયા');
+    }catch(err){ console.error(err); toast('❌ ફાઈલ વાંચવામાં ત્રુટિ'); }
   };
   reader.readAsArrayBuffer(file);
 }
-
 function parseDateTime(str){
   if (!str) return null;
   var m = String(str).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
-  if (m){
-    var d = new Date(+m[3], +m[2]-1, +m[1], +(m[4]||0), +(m[5]||0));
-    return isNaN(d) ? null : d.toISOString();
-  }
-  var d2 = new Date(str);
-  return isNaN(d2) ? null : d2.toISOString();
+  if (m){ var d = new Date(+m[3], +m[2]-1, +m[1], +(m[4]||0), +(m[5]||0)); return isNaN(d)?null:d.toISOString(); }
+  var d2 = new Date(str); return isNaN(d2)?null:d2.toISOString();
 }
 
-/* ======================================================================
-   EVENT BINDING
-   ====================================================================== */
+/* ============ EVENT BINDING ============ */
 document.getElementById('saveBtn').addEventListener('click', handleSave);
-
-document.getElementById('resetBtn').addEventListener('click', function(){
-  resetForm();
-  toast('ફોર્મ ખાલી કરવામાં આવ્યું');
-});
-
-document.getElementById('cancelBtn').addEventListener('click', function(){
-  resetForm();
-  toast('એડિટ રદ કરવામાં આવ્યું');
-});
-
+document.getElementById('resetBtn').addEventListener('click', function(){ resetForm(); toast('ફોર્મ ખાલી કરાયું'); });
+document.getElementById('cancelBtn').addEventListener('click', function(){ resetForm(); toast('એડિટ રદ'); });
 document.getElementById('exportBtn').addEventListener('click', exportExcel);
 document.getElementById('dashExportBtn').addEventListener('click', exportExcel);
 document.getElementById('clearAllBtn').addEventListener('click', clearAllSurveys);
 document.getElementById('dashClearBtn').addEventListener('click', clearAllSurveys);
-
+document.getElementById('syncBtn').addEventListener('click', function(){ syncFromSheet(false); });
 document.getElementById('records').addEventListener('click', function(e){
   var btn = e.target.closest('button[data-act]');
   if (!btn) return;
@@ -1171,89 +788,23 @@ document.getElementById('records').addEventListener('click', function(e){
   if (btn.dataset.act === 'edit') startEdit(id);
   else if (btn.dataset.act === 'del') deleteSurvey(id);
 });
-
-/* Login buttons */
 document.getElementById('loginBtn').addEventListener('click', handleLogin);
 document.getElementById('loginCancelBtn').addEventListener('click', hideLogin);
-document.getElementById('loginPass').addEventListener('keydown', function(e){
-  if (e.key === 'Enter') handleLogin();
-});
-
-/* Close modal when clicking dark overlay */
-document.getElementById('loginModal').addEventListener('click', function(e){
-  if (e.target.id === 'loginModal') hideLogin();
-});
-
-/* Dashboard nav */
+document.getElementById('loginPass').addEventListener('keydown', function(e){ if (e.key === 'Enter') handleLogin(); });
+document.getElementById('loginModal').addEventListener('click', function(e){ if (e.target.id === 'loginModal') hideLogin(); });
 document.getElementById('backToFormBtn').addEventListener('click', closeDashboard);
 document.getElementById('logoutBtn').addEventListener('click', logout);
-
-/* Import */
-document.getElementById('importBtn').addEventListener('click', function(){
-  document.getElementById('importFile').click();
-});
-document.getElementById('importFile').addEventListener('change', function(e){
-  handleImportFile(e.target.files[0]);
-  e.target.value = '';
-});
-
-/* Enter key → next field */
+document.getElementById('importBtn').addEventListener('click', function(){ document.getElementById('importFile').click(); });
+document.getElementById('importFile').addEventListener('change', function(e){ handleImportFile(e.target.files[0]); e.target.value = ''; });
 document.addEventListener('keydown', function(e){
   if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'file'){
-    var inputs = Array.prototype.slice.call(
-      document.querySelectorAll('#panels .panel.active input')
-    );
+    var inputs = Array.prototype.slice.call(document.querySelectorAll('#panels .panel.active input'));
     var i = inputs.indexOf(e.target);
     if (i > -1 && inputs[i+1]){ e.preventDefault(); inputs[i+1].focus(); }
   }
 });
-document.getElementById('syncBtn').addEventListener('click', function () {
-    if (typeof API_URL === 'undefined' || !API_URL || API_URL.indexOf('PASTE_') === 0) {
-        toast('⚠ API_URL સેટ કરેલ નથી');
-        return;
-    }
-    toast('Sheet થી ડેટા લાવી રહ્યા છીએ...');
 
-    fetch(API_URL + '?action=getAll')
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-            if (res.status !== 'success' || !res.data) {
-                toast('❌ ડેટા લાવવામાં ત્રુટિ');
-                return;
-            }
-
-            var imported = res.data.map(function (row) {
-                var products = [];
-                try { products = JSON.parse(row['Product Data (JSON)'] || '[]'); } catch (e) { }
-
-                return {
-                    id: uid() + '_' + Math.random().toString(36).slice(2, 6),
-                    createdAt: row['Timestamp'] || new Date().toISOString(),
-                    updatedAt: null,
-                    fillerName: row['Filler Name'] || '',
-                    shopName: row['Shop Name'] || '',
-                    ownerName: row['Owner Name'] || '',
-                    mobile: row['Mobile'] || '',
-                    address: row['Address'] || '',
-                    products: products
-                };
-            });
-
-            // Replace local data with sheet data
-            surveys = imported;
-            persist();
-            renderRecords();
-            renderDashboard();
-            toast('✔ ' + imported.length + ' સર્વે સિંક થયા');
-        })
-        .catch(function (err) {
-            console.error(err);
-            toast('❌ સિંક ત્રુટિ');
-        });
-});
-/* ======================================================================
-   INIT
-   ====================================================================== */
+/* ============ INIT ============ */
 loadData();
 buildForm();
 renderRecords();
